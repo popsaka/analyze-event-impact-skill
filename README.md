@@ -1,98 +1,73 @@
-# analyze-event-impact
+# analyze-event-impact-skill
 
-`analyze-event-impact` is an AI skill for event-driven market analysis. It is designed to help users analyze how wars, policy changes, regulation, geopolitics, public opinion shocks, supply disruptions, earnings, and other events may affect asset prices, sector performance, and market expectation gaps.
+Event-driven market-impact analysis skill for OpenClaw.
 
-Its core role is not to act as a knowledge base itself, but to turn event analysis into a reusable workflow:
+> Turns a client’s event question into a structured, decision-ready output with:  
+> **event confirmation → stage assessment → one-line quick take → macro/micro reasoning**.
 
-- build a reference frame for the event
-- identify market consensus and priced-in assumptions
-- locate the expectation gap
-- map transmission channels across supply, demand, policy, sentiment, and liquidity
-- produce scenario trees, validation signals, and structured conclusions
+## What this skill is for
 
-For advanced users, the skill can incorporate private research, internal notes, historical analogs, and house views. For ordinary users without a private knowledge base, it can still produce a first-pass analysis from a few core assumptions.
+Use it when users ask: “How will this event affect price?”
+- wars / geopolitics
+- regulation / policy
+- earnings / supply shocks
+- narrative or sentiment events
 
-The output is designed to be highly visual and shareable. It prefers tables, scenario trees, structured summaries, and can export the final report as a PDF.
+It is optimized for **client-facing clarity**, not academic verbosity.
 
-## What This Skill Does
+## Key features
 
-- Guides event-driven analysis with a structured reasoning framework
-- Separates facts, inference, and unknowns
-- Focuses on expectation gaps instead of generic summaries
-- Supports both professional users with proprietary context and ordinary users with only a rough hypothesis
-- Produces client-friendly outputs with tables, scenario comparisons, and monitoring checklists
-- Exports Markdown reports to PDF
+- Hard-gated event confirmation logic (A/B/C internal state)
+- One-line Quick Take with required numeric ranges:
+  - probability
+  - 1–3 day range
+  - 1 month range
+- Macro + Micro reasoning block
+- Micro section requires:
+  - indicator value
+  - one-sentence practical meaning
+- Built-in AHR999 + micro signal tooling
 
-## What This Skill Does Not Do
+## Included scripts
 
-- It is not a substitute for a private knowledge base
-- It does not magically inject domain expertise without context
-- It does not replace real-time data verification for recent events
+### `scripts/fetch_ahr999.py`
+Fetches AHR999 and a micro-indicator pack in one command.
 
-## Folder Structure
+Output includes:
+- AHR999 (multi-source fallback)
+- Fear & Greed
+- RSI(14)
+- MA200 deviation
+- Funding rate (8h)
+- OI 1d change
 
-```text
-analyze-event-impact/
-├── SKILL.md
-├── agents/
-│   └── openai.yaml
-├── references/
-│   ├── event-impact-framework.md
-│   ├── intake-template.md
-│   └── private-context-template.md
-└── scripts/
-    └── render_report_pdf.py
-```
+Source priority for AHR999:
+1. Coinglass public endpoint
+2. Coinglass OpenAPI (if key is provided)
+3. Local formula fallback (CoinGecko + public formula)
 
-## Key Files
-
-- `SKILL.md`
-  The main workflow and reasoning rules for the skill.
-
-- `references/intake-template.md`
-  Low-friction intake template for users. Includes both English and Chinese versions.
-
-- `references/private-context-template.md`
-  Template for loading proprietary research, internal notes, analog libraries, and house views.
-
-- `references/event-impact-framework.md`
-  Reusable event-impact reasoning skeleton.
-
-- `scripts/render_report_pdf.py`
-  Converts markdown-style reports into PDF. Prefers a styled ReportLab renderer and falls back to a plain-text macOS renderer when necessary.
-
-## Usage Pattern
-
-Typical workflow:
-
-1. Collect the event and user hypothesis
-2. Build the reference frame
-3. Identify what the market may already believe
-4. Test for expectation gaps
-5. Map impact channels across assets and time horizons
-6. Produce a structured answer
-7. Export the report to PDF if needed
-
-## PDF Export
-
-To render a markdown report into PDF:
+## Usage
 
 ```bash
-python3 scripts/render_report_pdf.py /path/to/report.md /path/to/report.pdf --preview-png
+python3 scripts/fetch_ahr999.py --symbol BTC --pretty
 ```
 
-For prettier output, install:
+Optional env for OpenAPI fallback:
 
 ```bash
-python3 -m pip install reportlab
+export COINGLASS_API_KEY=your_key
+# or
+export COINGLASS_OPEN_API_KEY=your_key
 ```
 
-Without `reportlab`, the script falls back to a simpler macOS built-in renderer.
+## Skill output contract (default)
 
-## Recommended Positioning
+1. **Quick Take** (exactly one line, numeric)
+2. **Event Stage & Market Consensus**
+3. **Why**
+   - Macro analysis
+   - Micro analysis (value + one-line implication per indicator)
 
-This skill works best when positioned as:
+## Repository description (suggested)
 
-**A reasoning framework for event-driven analysis, not a replacement for domain knowledge.**
-
-Its value comes from making the analysis process more structured, more repeatable, more visual, and easier to share.
+OpenClaw skill for event-driven price-impact analysis with one-line numeric quick take, macro/micro framework, and AHR999 micro-signal fallback tooling.
