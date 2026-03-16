@@ -68,6 +68,24 @@ export COINGLASS_OPEN_API_KEY=your_key
    - Macro analysis
    - Micro analysis (value + one-line implication per indicator)
 
+## Release notes
+
+### v1.1.0
+
+- Added **10 event types** and **4 parent families** for routing before analysis.
+- Added **analysis emphasis selector** (data-heavy vs logic-heavy vs mixed).
+- Added **single-company strict template**:
+  1. event facts (time-ordered)
+  2. price path reaction window
+  3. data panel (market cap / valuation proxy / short metrics / peer comparison)
+  4. top-3 drivers market is pricing
+  5. priced-in decomposition (headline / fundamentals / new narrative)
+  6. one-line quick take at the end
+- Updated references:
+  - `references/event-impact-framework.md`
+  - `references/intake-template.md`
+- Goal of this release: improve narrative flow and evidence density for company-specific events while preserving structured consistency.
+
 ## Repository description (suggested)
 
 OpenClaw skill for event-driven price-impact analysis with one-line numeric quick take, macro/micro framework, and AHR999 micro-signal fallback tooling.
