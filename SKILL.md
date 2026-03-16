@@ -83,6 +83,31 @@ python3 -m pip install reportlab
 
 Use this exact sequence.
 
+### 0) Event routing + analysis emphasis (must do before writing)
+
+First route the event into one of 10 common types:
+- Geopolitics / war
+- Single-company event (earnings, financing, treasury, management action)
+- Macro / central-bank / liquidity
+- Regulation / enforcement
+- Exchange / market-structure change
+- Protocol upgrade / tokenomics parameter change
+- Security incident / credit event
+- Supply shock (unlock, production, inventory)
+- Narrative rotation / theme shift
+- Positioning & liquidity squeeze (funding/OI/liquidation driven)
+
+Then map to one of 4 parent families and choose analysis weight:
+- **A 外生冲击** (geopolitics/macro/regulation/security): default `逻辑 70 / 数据 30`
+- **B 内生基本面** (single-company/protocol/supply): default `数据 70 / 逻辑 30`
+- **C 微观结构** (exchange mechanics/squeeze): default `数据 70 / 逻辑 30`
+- **D 叙事制度切换** (narrative regime): default `逻辑 70 / 数据 30`
+
+Quick judge rule:
+- If high observability + short latency + low narrative dependence -> data-heavy
+- If low observability + long latency + high narrative dependence -> logic-heavy
+- If mixed -> 50/50 and explicitly separate fact block vs scenario block
+
 ### 1) Event confirmation (internal thinking step, do not output by default)
 
 - Classify as `A 已发生 / B 未发生（反事实） / C 信息不足`.
@@ -125,6 +150,27 @@ If AHR999 still returns unavailable, keep analysis running with confidence hairc
 
 If retrieval is partial, proceed with explicit confidence haircut and label missing indicators.
 
+### 2.5) Single-company mode (mandatory when event is company-specific)
+
+When the event is a single listed company (e.g., BTDR treasury sale), enforce this spine.
+
+**Sequence (strict):**
+1. **Event facts first** (time order, no interpretation): exact action, size, timestamp, management stated reason.
+2. **Price path second**: D-1 / D0 / D1 / D3 / D5 (or nearest available dates), plus key volume/volatility change.
+3. **Data panel third** (minimum 4 items when available):
+   - market cap
+   - valuation proxy (P/S, EV/Sales, or P/E if meaningful)
+   - short interest / short float
+   - peer-relative performance (at least 2 peers)
+4. **What market is trading**: rank top 3 drivers (e.g., earnings deterioration, financing dilution, business-model reset).
+5. **Priced-in decomposition**: split into at least 3 layers with % ranges:
+   - event headline itself
+   - core fundamental deterioration
+   - new narrative execution probability
+
+Do not jump to a binary "priced in / not priced in" statement without this decomposition.
+For single-company mode, avoid opening with Quick Take; put Quick Take at the end as a final synthesis line.
+
 ### 3) Quick take (must be one line)
 
 Provide exactly one line containing numbers:
@@ -147,13 +193,22 @@ For `微观分析`, enforce this format per indicator:
 
 ## Output Format
 
-Default output order:
+Default output order (non-single-company):
 
 1. `Quick Take` (one line only, with probability + 1~3天区间 + 1个月区间)
-2. `事件阶段与市场共识` (event nodes, current stage, price path, priced-in reading)
-3. `原因`:
+2. `分析路由` (event type + parent family + 本题权重：数据x%/逻辑x%)
+3. `事件阶段与市场共识` (event nodes, current stage, price path, priced-in reading)
+4. `原因`:
    - 宏观分析
    - 微观分析（每个指标都要“数值 + 一句话指导意义”）
+
+Output order (single-company mode, strict):
+1. `事件事实（按时间）`
+2. `价格路径与市场反应`
+3. `数据面板（公司+同业对比）`
+4. `市场在交易什么（Top3）`
+5. `priced-in分层表`（headline / fundamentals / new narrative）
+6. `Quick Take`（放在末尾，一行总结）
 
 Rules:
 - Do not dump the A/B/C confirmation block by default; keep it internal.

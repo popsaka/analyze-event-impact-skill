@@ -35,6 +35,20 @@ Ask only the questions needed for the task.
 6. Which variable do you think the market is underweighting or misreading?
 7. What horizon matters: intraday, days, weeks, or structural?
 8. Do you have any house view, watchlist, or analog case to load?
+9. Is this event mainly data-verifiable now, or mainly scenario/logic-driven for now?
+
+## Analysis emphasis selector (quick)
+
+Before writing, self-score each 1-5:
+- Observability (hard data available now)
+- Latency (how fast event transmits to price)
+- Reflexivity (market behavior feeds back into event)
+- Narrative dependence (judgment-heavy vs data-heavy)
+
+Routing:
+- High observability + short latency -> data-heavy
+- Low observability + long latency -> logic-heavy
+- Mixed -> split 50/50 and separate facts vs scenarios
 
 ## Fast-fill version
 
